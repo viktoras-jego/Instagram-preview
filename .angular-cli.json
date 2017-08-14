@@ -19,9 +19,12 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "styles.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/bootstrap/dist/js/bootstrap.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
@@ -50,7 +53,9 @@
       "config": "./karma.conf.js"
     }
   },
-  "defaults": {
+  "defaults": {"serve": {
+    "port": 4200
+  },
     "styleExt": "css",
     "component": {}
   }
