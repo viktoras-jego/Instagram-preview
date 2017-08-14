@@ -1,9 +1,10 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./_base.scss'],
+  styleUrls: ['./Front page/scss/_base.scss', './Front page/scss/_checkbox.scss'],
   encapsulation: ViewEncapsulation.None
 })
 

@@ -5,9 +5,30 @@
                 <img class="logo" src="../../assets/Photos/logo.png">
             </div>
             <div class="title-row">
-                <span class="title">Profile preview</span>
+                <span class="title">Instagram Profile Preview</span>
+            </div>
+            <div class="note-row">
+                <span class="note">Enter Username you wish to preview</span>
+            </div>
+            <div class="search-row">
+                <div class="form-group">
+                    <div class="icon-addon addon-md">
+                        <input type="text" placeholder="Username" class="form-control search-text" id="user">
+                        <label for="user" class="glyphicon glyphicon-search" rel="tooltip" title="user"></label>
+                    </div>
+                </div>
+            </div>
+            <form onsubmit="check()" role="form" class="checkbox-row">
+                <div class="checkbox">
+                    <input type="checkbox" id="checkbox1">
+                    <label for="checkbox1">
+                        Remember Username
+                    </label>
+                </div>
+            </form>
+            <div class="button-row">
+                <button type="submit" class="fill">Preview</button>
             </div>
         </div>
     </div>
 </div>
-
