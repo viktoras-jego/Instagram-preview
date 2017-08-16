@@ -1,6 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import {ErrorHandler, NgModule} from '@angular/core';
 import * as Raven from 'raven-js';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { HttpModule } from '@angular/http';
 import { FrontPageComponent } from './Front page/front-page.component';
 import { PreloaderComponent  } from './Components/preloader.component';
 
@@ -25,11 +28,16 @@ export class RavenErrorHandler implements ErrorHandler {
   ],
   imports: [
     BrowserModule,
+    HttpModule,
+    CommonModule,
+    RouterModule.forRoot([], { useHash: false }),
+  ],
+  exports: [
+    PreloaderComponent,
   ],
   providers: [{ provide: ErrorHandler, useClass: RavenErrorHandler }],
   bootstrap: [AppComponent,
     FrontPageComponent,
-    PreloaderComponent ,
   ]
 })
 export class AppModule { }
