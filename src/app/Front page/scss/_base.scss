@@ -67,3 +67,49 @@
   text-align: center;
   margin-top: 45px;
 }
+/*******************************
+   Profile Preview UI
+*******************************/
+
+.user-info {
+  height: 20%;
+  margin-top: 5%;
+}
+.profile-picture-row {
+  height: 100%;
+  width: 30%;
+  padding: 2%;
+  display: inline-block;
+  text-align: center;
+}
+.profile-picture {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  height: 75px;
+  width: 75px;
+  margin-top: 10px;
+}
+.username {
+  width: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+}
+.font1 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 22px;
+}
+.font2 {
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+

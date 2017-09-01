@@ -1,35 +1,55 @@
 <div class="container">
     <div class="row">
-        <div class="login-screen col-md-4 col-md-offset-4 col-sm-offset-3 col-sm-6 col-xs-12">
+        <div style="padding: 0" class="login-screen col-md-4 col-md-offset-4 col-sm-offset-3 col-sm-6 col-xs-12">
+
+            <!-- PRELOADER -->
             <preloader *ngIf="loading"></preloader>
-            <div class="logo-row">
-                <img class="logo" src="../../assets/Photos/logo.png">
-            </div>
-            <div class="title-row">
-                <span class="title">Profile Preview</span>
-            </div>
-            <div class="note-row">
-                <span class="note">Enter Username you wish to preview</span>
-            </div>
-            <form (submit)="submit($event)" role="form" class="form-row">
-                <div class="search-row">
-                    <div class="form-group">
-                        <div class="icon-addon addon-md">
-                            <input #user type="text" placeholder="Username" class="form-control search-text" id="user" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-                            <label for="user" class="glyphicon glyphicon-search" rel="tooltip" title="user"></label>
+
+            <!-- FRONT PAGE UI -->
+            <div *ngIf="status === 'c'" #loginScreen>
+                <div class="logo-row">
+                    <img class="logo" src="../../assets/Photos/logo.png">
+                </div>
+                <div class="title-row">
+                    <span class="title">Profile Preview</span>
+                </div>
+                <div class="note-row">
+                    <span class="note">Enter Username you wish to preview</span>
+                </div>
+                <form (submit)="submit($event)" role="form" class="form-row">
+                    <div style="padding-right: 15px; padding-left: 15px" class="search-row">
+                        <div class="form-group">
+                            <div class="icon-addon addon-md">
+                                <input #user type="text" placeholder="Username" class="form-control search-text" id="user" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                                <label for="user" class="glyphicon glyphicon-search" rel="tooltip" title="user"></label>
+                            </div>
                         </div>
                     </div>
+                    <div class="checkbox checkbox-row">
+                        <input #checkbox type="checkbox" id="checkbox1">
+                        <label for="checkbox1">
+                            Remember Username
+                        </label>
+                    </div>
+                    <div class="button-row">
+                        <button type="submit" class="fill">Preview</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- PROFILE PREVIEW UI -->
+            <div [hidden]="status !== ''" #profileUI style="opacity: 1; height: 100%">
+                <div class="user-info">
+                    <div class="profile-picture-row">
+                        <img class="profile-picture" [src]="dummyUser.profilePicture">
+                    </div>
+                    <div class="username">
+                        <div class="font1">{{dummyUser.username}}</div>
+                        <div style="margin-top: 5px" class="font2">{{dummyUser.fullName}}</div>
+                    </div>
                 </div>
-                <div class="checkbox checkbox-row">
-                    <input #checkbox type="checkbox" id="checkbox1">
-                    <label for="checkbox1">
-                        Remember Username
-                    </label>
-                </div>
-                <div class="button-row">
-                    <button type="submit" class="fill">Preview</button>
-                </div>
-            </form>
+            </div>
+
         </div>
     </div>
 </div>
