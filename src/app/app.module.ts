@@ -7,7 +7,6 @@ import { HttpModule } from '@angular/http';
 import { FrontPageComponent } from './Front page/front-page.component';
 import { PreloaderComponent  } from './Components/preloader.component';
 
-
 import { AppComponent } from './app.component';
 
 Raven

@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TimelineMax, Back } from 'gsap';
+import { Draggable } from 'gsap/Draggable';
 import $ from 'jquery/dist/jquery';
 import { Http } from '@angular/http';
 import { ActivatedRoute } from '@angular/router';
@@ -11,20 +12,24 @@ import { ActivatedRoute } from '@angular/router';
 export class FrontPageComponent implements OnInit, AfterViewInit {
 
     public loading: boolean = false;
+    public screenWidth: number;
     public images: any = [];
     public userInfo: any = {fullName: '', profilePicture: '', username: ''};
     public status: string = '';
-    public dummyPhotos = {
-        0: 'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.108.873.873/20066799_706414102898617_3184857248010600448_n.jpg',
-        1: 'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.107.861.861/20184919_116943978935194_8567338812005416960_n.jpg',
-        2: 'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.99.797.797/20185014_286653648475373_1163594412438061056_n.jpg',
-        3: 'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.134.1080.1080/20214307_329021344190130_4159934563595845632_n.jpg',
-        4: 'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.100.799.799/20398961_122189688403027_2017131716983914496_n.jpg',
-        5: 'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.103.827.827/20394388_1434919299926135_5052655095301275648_n.jpg',
-        6: 'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.135.1080.1080/20481786_1422217437861803_1942832815737405440_n.jpg',
-        7: 'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.62.595.595/20590310_471501456556266_1623176528953081856_n.jpg',
-        8: 'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.99.797.797/20688322_292010481266899_7157904075021877248_n.jpg'
-    };
+    public dummyPhotos = [
+        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.108.873.873/20066799_706414102898617_3184857248010600448_n.jpg',
+        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.107.861.861/20184919_116943978935194_8567338812005416960_n.jpg',
+        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.99.797.797/20185014_286653648475373_1163594412438061056_n.jpg',
+        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.134.1080.1080/20214307_329021344190130_4159934563595845632_n.jpg',
+        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.100.799.799/20398961_122189688403027_2017131716983914496_n.jpg',
+        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.103.827.827/20394388_1434919299926135_5052655095301275648_n.jpg',
+        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.135.1080.1080/20481786_1422217437861803_1942832815737405440_n.jpg',
+        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.62.595.595/20590310_471501456556266_1623176528953081856_n.jpg',
+        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.99.797.797/20688322_292010481266899_7157904075021877248_n.jpg',
+        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.100.799.799/20398961_122189688403027_2017131716983914496_n.jpg',
+        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.134.1080.1080/20214307_329021344190130_4159934563595845632_n.jpg',
+        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.107.861.861/20184919_116943978935194_8567338812005416960_n.jpg',
+    ];
     public dummyUser = {
         fullName: 'Marius Pilipas',
         profilePicture: 'https://scontent-iad3-1.cdninstagram.com/t51.2885-19/s150x150/14591986_1052414564904497_290196869877858304_n.jpg',
@@ -34,12 +39,14 @@ export class FrontPageComponent implements OnInit, AfterViewInit {
     @ViewChild('checkbox')checkbox: ElementRef;
     @ViewChild('profileUI')profileUI: ElementRef;
     @ViewChild('loginScreen')loginScreen: ElementRef;
+    @ViewChild('list')list: ElementRef;
 
     constructor(private http: Http,
                 protected route: ActivatedRoute) {}
 
     ngOnInit (): void {
-        //
+        console.log('status is' + this.status);
+        this.screenWidth = window.innerWidth;
     }
     ngAfterViewInit (): void {
         this.checkRemember();
@@ -56,7 +63,7 @@ export class FrontPageComponent implements OnInit, AfterViewInit {
     sendRequest(): any {
         const username = this.user.nativeElement.value;
         $.ajax({
-            url: 'https://igapi.ga/' + username + '/media/?count=9',
+            url: 'https://igapi.ga/' + username + '/media/?count=12',
             dataType: 'jsonp',
             type: 'GET',
             success: (data) => {
@@ -125,6 +132,9 @@ export class FrontPageComponent implements OnInit, AfterViewInit {
 
     unsaveUsername (): void {
         localStorage.removeItem('Profile_Preview_Username');
+    }
+    onResize(event) {
+        this.screenWidth = event.target.innerWidth;
     }
 
 }
