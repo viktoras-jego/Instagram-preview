@@ -1,15 +1,17 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnChanges, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TimelineMax, Back } from 'gsap';
 import { Draggable } from 'gsap/Draggable';
 import $ from 'jquery/dist/jquery';
 import { Http } from '@angular/http';
+import { NgxCroppieComponent } from 'ngx-croppie';
+import { CroppieOptions } from 'croppie';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'front-page',
     templateUrl: './front-page.template.html'
 })
-export class FrontPageComponent implements OnInit, AfterViewInit {
+export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
 
     public loading: boolean = false;
     public screenWidth: number;
@@ -35,19 +37,84 @@ export class FrontPageComponent implements OnInit, AfterViewInit {
         profilePicture: 'https://scontent-iad3-1.cdninstagram.com/t51.2885-19/s150x150/14591986_1052414564904497_290196869877858304_n.jpg',
         username: 'granmarino'
     };
+
+    widthPx = '300';
+    heightPx = '300';
+    imageUrl = '';
+    currentImage: string;
+    croppieImage: string;
+
     @ViewChild('user')user: ElementRef;
     @ViewChild('checkbox')checkbox: ElementRef;
     @ViewChild('profileUI')profileUI: ElementRef;
     @ViewChild('loginScreen')loginScreen: ElementRef;
     @ViewChild('list')list: ElementRef;
+    @ViewChild('ngxCroppie') ngxCroppie: NgxCroppieComponent;
 
     constructor(private http: Http,
                 protected route: ActivatedRoute) {}
 
     ngOnInit (): void {
-        console.log('status is' + this.status);
         this.screenWidth = window.innerWidth;
+        this.currentImage = this.imageUrl;
+        this.croppieImage = this.imageUrl;
     }
+
+    public get imageToDisplay() {
+        if (this.currentImage) { return this.currentImage; }
+        if (this.imageUrl) { return this.imageUrl; }
+        return `http://placehold.it/${this.widthPx}x${this.heightPx}`;
+    }
+
+    public get croppieOptions(): CroppieOptions {
+        const opts: CroppieOptions = {};
+        opts.viewport = {
+            width: parseInt(this.widthPx, 10),
+            height: parseInt(this.heightPx, 10)
+        };
+        opts.boundary = {
+            width: parseInt(this.widthPx, 10),
+            height: parseInt(this.heightPx, 10)
+        };
+        opts.enforceBoundary = true;
+        return opts;
+    }
+
+    newImageResultFromCroppie(img: string) {
+        this.croppieImage = img;
+    }
+
+    saveImageFromCroppie() {
+        this.currentImage = this.croppieImage;
+        this.croppieImage = '';
+        this.currentImage = '';
+    }
+
+    cancelCroppieEdit() {
+        this.croppieImage = this.currentImage;
+    }
+
+    imageUploadEvent(evt: any) {
+        if (!evt.target) { return; }
+        if (!evt.target.files) { return; }
+        if (evt.target.files.length !== 1) { return; }
+        const file = evt.target.files[0];
+        if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif' && file.type !== 'image/jpg') { return; }
+        const fr = new FileReader();
+        fr.onloadend = (loadEvent) => {
+            this.croppieImage = fr.result;
+        };
+        fr.readAsDataURL(file);
+    }
+
+    ngOnChanges(changes: any) {
+        if (this.croppieImage) { return; }
+        if (!changes.imageUrl) { return; }
+        if (!changes.imageUrl.previousValue && changes.imageUrl.currentValue) {
+            this.croppieImage = changes.imageUrl.currentValue;
+        }
+    }
+
     ngAfterViewInit (): void {
         this.checkRemember();
     }

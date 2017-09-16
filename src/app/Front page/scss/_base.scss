@@ -77,6 +77,8 @@
 .user-info {
   margin-top: 5%;
   height: calc(100vh - 138vw);
+  min-height: 138px;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.25);
 }
 .profile-picture-row {
   height: 100%;
@@ -97,6 +99,7 @@
   display: inline-block;
   vertical-align: middle;
   text-align: center;
+  padding-top: 15px;
 }
 .font1 {
   font-family: 'Roboto', sans-serif;
@@ -125,10 +128,20 @@
 }
 .single-photo {
   border-right: .5vw solid transparent;
-  border-top: .5vw solid transparent;
+  border-top: .4vw solid transparent;
   width: 33.1666666vw;
   height: 33.1666666vw;
   display: inline;
+}
+.add-button {
+  background-color: transparent;
+  border-radius: 5px;
+  border: 1px solid rgba(128, 128, 128, 0.7);
+  display: inline-block;
+  margin-top: 10px;
+  width: 90%;
+  font-weight: 700;
+  height: 30px;
 }
 
 

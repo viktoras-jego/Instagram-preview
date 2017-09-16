@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { FrontPageComponent } from './Front page/front-page.component';
 import { PreloaderComponent  } from './Components/preloader.component';
+import { ModalModule } from 'ng2-modal';
+import { NgxCroppieModule } from 'ngx-croppie';
 
 import { AppComponent } from './app.component';
 
@@ -30,6 +32,8 @@ export class RavenErrorHandler implements ErrorHandler {
     HttpModule,
     CommonModule,
     RouterModule.forRoot([], { useHash: false }),
+    ModalModule,
+    NgxCroppieModule
   ],
   exports: [
     PreloaderComponent,
