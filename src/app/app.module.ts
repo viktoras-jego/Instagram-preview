@@ -1,11 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {ErrorHandler, NgModule} from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import * as Raven from 'raven-js';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { FrontPageComponent } from './Front page/front-page.component';
 import { PreloaderComponent  } from './Components/preloader.component';
+import { NgxCroppieComponent  } from './Components/ngx-croppie.component';
 import { ModalModule } from 'ng2-modal';
 import { NgxCroppieModule } from 'ngx-croppie';
 
@@ -25,7 +26,8 @@ export class RavenErrorHandler implements ErrorHandler {
   declarations: [
     AppComponent,
     FrontPageComponent,
-    PreloaderComponent ,
+    PreloaderComponent,
+    NgxCroppieComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +39,7 @@ export class RavenErrorHandler implements ErrorHandler {
   ],
   exports: [
     PreloaderComponent,
+    NgxCroppieComponent
   ],
   providers: [{ provide: ErrorHandler, useClass: RavenErrorHandler }],
   bootstrap: [AppComponent,

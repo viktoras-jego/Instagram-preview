@@ -16,39 +16,28 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     public loading: boolean = false;
     public screenWidth: number;
     public images: any = [];
-    public userInfo: any = {fullName: '', profilePicture: '', username: ''};
-    public status: string = '';
-    public dummyPhotos = [
-        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.108.873.873/20066799_706414102898617_3184857248010600448_n.jpg',
-        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.107.861.861/20184919_116943978935194_8567338812005416960_n.jpg',
-        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.99.797.797/20185014_286653648475373_1163594412438061056_n.jpg',
-        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.134.1080.1080/20214307_329021344190130_4159934563595845632_n.jpg',
-        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.100.799.799/20398961_122189688403027_2017131716983914496_n.jpg',
-        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.103.827.827/20394388_1434919299926135_5052655095301275648_n.jpg',
-        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.135.1080.1080/20481786_1422217437861803_1942832815737405440_n.jpg',
-        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.62.595.595/20590310_471501456556266_1623176528953081856_n.jpg',
-        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.99.797.797/20688322_292010481266899_7157904075021877248_n.jpg',
-        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.100.799.799/20398961_122189688403027_2017131716983914496_n.jpg',
-        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.134.1080.1080/20214307_329021344190130_4159934563595845632_n.jpg',
-        'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.107.861.861/20184919_116943978935194_8567338812005416960_n.jpg',
-    ];
-    public dummyUser = {
-        fullName: 'Marius Pilipas',
-        profilePicture: 'https://scontent-iad3-1.cdninstagram.com/t51.2885-19/s150x150/14591986_1052414564904497_290196869877858304_n.jpg',
-        username: 'granmarino'
+    public userInfo = {
+        fullName: '',
+        profilePicture: '',
+        username: ''
     };
+    public status: string = '';
 
-    widthPx = '300';
-    heightPx = '300';
+    widthPx = '80vw';
+    heightPx = '80vw';
     imageUrl = '';
     currentImage: string;
     croppieImage: string;
+    currentOrientation: number = 0;
+    orientation: number = 1;
 
     @ViewChild('user')user: ElementRef;
     @ViewChild('checkbox')checkbox: ElementRef;
     @ViewChild('profileUI')profileUI: ElementRef;
     @ViewChild('loginScreen')loginScreen: ElementRef;
     @ViewChild('list')list: ElementRef;
+    @ViewChild('inputFile')inputFile: ElementRef;
+    @ViewChild('usernameInput')usernameInput: ElementRef;
     @ViewChild('ngxCroppie') ngxCroppie: NgxCroppieComponent;
 
     constructor(private http: Http,
@@ -61,37 +50,52 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     public get imageToDisplay() {
+        console.log('test1');
         if (this.currentImage) { return this.currentImage; }
         if (this.imageUrl) { return this.imageUrl; }
         return `http://placehold.it/${this.widthPx}x${this.heightPx}`;
     }
 
     public get croppieOptions(): CroppieOptions {
+        console.log('test');
         const opts: CroppieOptions = {};
         opts.viewport = {
-            width: parseInt(this.widthPx, 10),
-            height: parseInt(this.heightPx, 10)
+            width: this.widthPx,
+            height: this.heightPx
         };
         opts.boundary = {
-            width: parseInt(this.widthPx, 10),
-            height: parseInt(this.heightPx, 10)
+            width: this.widthPx,
+            height: this.heightPx
         };
         opts.enforceBoundary = true;
+        opts.enableOrientation = true;
         return opts;
     }
 
     newImageResultFromCroppie(img: string) {
+        console.log('test2');
         this.croppieImage = img;
     }
 
     saveImageFromCroppie() {
+        console.log('test3');
         this.currentImage = this.croppieImage;
-        this.croppieImage = '';
-        this.currentImage = '';
+        if (this.inputFile.nativeElement.value !== '') {
+            this.imageDisplay();
+        }
     }
 
-    cancelCroppieEdit() {
-        this.croppieImage = this.currentImage;
+    clearImage() {
+        this.inputFile.nativeElement.value = '';
+        this.croppieImage = '';
+        this.currentImage = '';
+        this.orientation = 1;
+        this.currentOrientation = 0;
+    }
+
+    imageDisplay() {
+        this.images.splice(11, 11);
+        this.images.unshift(this.currentImage);
     }
 
     imageUploadEvent(evt: any) {
@@ -130,11 +134,10 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     sendRequest(): any {
         const username = this.user.nativeElement.value;
         $.ajax({
-            url: 'https://igapi.ga/' + username + '/media/?count=12',
+            url: 'https://igpi.ga/' + username + '/media/?count=12',
             dataType: 'jsonp',
             type: 'GET',
             success: (data) => {
-                console.log(data);
                 this.getData(data);
             },
             error: function(error){
@@ -149,13 +152,11 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
         if (0 < data.items.length) {
             // Gets Images
             data.items.forEach((item) => {
-                this.images.unshift(item.images.thumbnail.url);
+                this.images.push(item.images.thumbnail.url);
             });
             this.userInfo.fullName = data.items[0].user.full_name;
             this.userInfo.profilePicture = data.items[0].user.profile_picture;
             this.userInfo.username = data.items[0].user.username;
-            console.log(this.userInfo);
-            console.log(this.images);
             this.openProfile();
         }
     }
@@ -176,7 +177,7 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
         });
         setTimeout(() => {
             this.loading = false;
-        }, time * 2300);
+        }, time * 1400);
     }
     checkRemember(): void {
         if (localStorage.getItem('Profile_Preview_Username')) {
@@ -202,6 +203,21 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     }
     onResize(event) {
         this.screenWidth = event.target.innerWidth;
+    }
+    onFocus(target) {
+        target.scrollIntoView({behavior: 'smooth'});
+    }
+    rotateImage() {
+        this.currentImage = '';
+        const orientationArray = [0, 3, 8, 3, 6, 8, 3, 6 , 8 , 3]; // This is array
+        console.log(this.currentOrientation);
+        if (this.currentOrientation === 10) {
+            this.currentOrientation = 1;
+            this.orientation = orientationArray[this.currentOrientation];
+        } else {
+            this.currentOrientation++;
+        }
+        this.orientation = orientationArray[this.currentOrientation];
     }
 
 }

@@ -44,11 +44,11 @@
             <div [hidden]="status !== 'g'" #profileUI style="opacity: 1; height: 100%">
                 <div class="user-info">
                     <div class="profile-picture-row">
-                        <img class="profile-picture" [src]="dummyUser.profilePicture">
+                        <img class="profile-picture" [src]="userInfo.profilePicture">
                     </div>
                     <div class="username">
-                        <div class="font1">{{dummyUser.username}}</div>
-                        <div style="margin-top: 5px" class="font2">{{dummyUser.fullName}}</div>
+                        <div class="font1">{{userInfo.username}}</div>
+                        <div style="margin-top: 5px" class="font2">{{userInfo.fullName}}</div>
                     </div>
                 </div>
                 <div class="">
@@ -68,12 +68,12 @@
             <preloader *ngIf="loading"></preloader>
 
             <!-- FRONT PAGE UI -->
-            <div *ngIf="status === 'f'" #loginScreen>
+            <div *ngIf="status === ''" #loginScreen>
                 <div class="logo-row">
                     <img class="logo" src="../../assets/Photos/logo.png">
                 </div>
                 <div class="title-row">
-                    <span class="title">Profile Preview</span>
+                    <span class="title">Instagram Profile Preview</span>
                 </div>
                 <div class="note-row">
                     <span class="note">Enter Username you wish to preview</span>
@@ -82,7 +82,7 @@
                     <div style="padding-right: 15px; padding-left: 15px" class="search-row">
                         <div class="form-group">
                             <div class="icon-addon addon-md">
-                                <input #user type="text" placeholder="Username" class="form-control search-text" id="user2" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                                <input #usernameInput (focus)="onFocus(usernameInput)" #user type="text" placeholder="Username" class="form-control search-text" id="user2" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                                 <label for="user2" class="glyphicon glyphicon-search" rel="tooltip" title="user"></label>
                             </div>
                         </div>
@@ -100,37 +100,47 @@
             </div>
 
             <!-- PROFILE PREVIEW UI  status = 'Public'-->
-            <div [hidden]="status !== ''" #profileUI class="profileUI">
-                <div class="user-info">
-                    <div class="profile-picture-row">
-                        <img class="profile-picture" [src]="dummyUser.profilePicture">
-                    </div>
-                    <div class="username">
-                        <div class="font1">{{dummyUser.username}}</div>
-                        <div style="margin-top: 5px" class="font2">{{dummyUser.fullName}}</div>
-                        <button (click)="photoModal.open()" class="add-button">
-                            Add Photo
-                        </button>
-                        <modal #photoModal>
-                            <modal-header #modalHeader1>
-                            </modal-header>
-                            <modal-content>
-                                <div>
-                                    <ngx-croppie *ngIf="croppieImage" #ngxCroppie [croppieOptions]="croppieOptions" [imageUrl]="croppieImage" (result)="newImageResultFromCroppie($event)"></ngx-croppie>
-                                </div>
-                                <div>
-                                    <input type="file" id="fileupload" #imageUpload (change)="imageUploadEvent($event)" accept="image/gif, image/jpeg, image/png">
+            <div [hidden]="status !== 'Public'">
+                <div #profileUI class="profileUI">
+                    <div class="user-info">
+                        <div class="profile-picture-row">
+                            <img class="profile-picture" [src]="userInfo.profilePicture">
+                        </div>
+                        <div class="username">
+                            <div class="font1">{{userInfo.username}}</div>
+                            <div style="margin-top: 5px" class="font2">{{userInfo.fullName}}</div>
+                            <button (click)="photoModal.open()" class="add-button">
+                                Add Photo
+                            </button>
+                            <modal (onClose)="clearImage()" #photoModal>
+                                <modal-header #modalHeader1>
+                                </modal-header>
+                                <modal-content>
+                                    <div>
+                                        <ng-croppie *ngIf="croppieImage" #ngxCroppie [orientation]="orientation" [croppieOptions]="croppieOptions" [imageUrl]="croppieImage" (result)="newImageResultFromCroppie($event)"></ng-croppie>
                                     </div>
-                            </modal-content>
-                            <modal-footer>
-                                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="cancelCroppieEdit()">Cancel</button>
-                                <button type="button" class="btn btn-primary" (click)="saveImageFromCroppie(); photoModal.close()">Save</button>
-                            </modal-footer>
-                        </modal>
+                                    <div>
+                                        <div class="image-upload">
+                                            <label *ngIf="croppieImage === ''" for="fileupload">
+                                                <img class="add-image" src="../../assets/Photos/Plus.png">
+                                                <span style="display: block" class="upload-text">Upload a Photo</span>
+                                            </label>
+                                            <input #inputFile style="display: none" type="file" id="fileupload"  #imageUpload (change)="imageUploadEvent($event)" accept="image/*">
+                                        </div>
+                                    </div>
+                                </modal-content>
+                                <modal-footer style="text-align: center; width: inherit">
+                                    <button type="button" class="btn action-btn btn-default cancel-btn" (click)="photoModal.close()">Cancel</button>
+                                    <button type="button" class="btn action-btn btn-default clear-btn" data-dismiss="modal" (click)="clearImage()">Clear</button>
+                                    <button type="button" class="btn action-btn btn-default rotate-btn" data-dismiss="modal" (click)="rotateImage()">Rotate</button>
+                                    <button type="button" class="btn action-btn btn-default save-btn" (click)="saveImageFromCroppie(); photoModal.close()">Save</button>
+                                </modal-footer>
+                            </modal>
+                        </div>
                     </div>
-                </div>
-                <div class="photo-box">
-                    <img *ngFor="let photo of dummyPhotos" class="single-photo" [src]="photo">
+                    <div class="photo-box">
+                        <img *ngFor="let image of images" class="single-photo" [src]="image">
+                    </div>
                 </div>
             </div>
         </div>
