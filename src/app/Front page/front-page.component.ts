@@ -41,12 +41,17 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     @ViewChild('ngxCroppie') ngxCroppie: NgxCroppieComponent;
 
     constructor(private http: Http,
-                protected route: ActivatedRoute) {}
+                protected route: ActivatedRoute) {
+    }
 
     ngOnInit (): void {
         this.screenWidth = window.innerWidth;
         this.currentImage = this.imageUrl;
         this.croppieImage = this.imageUrl;
+        if (this.screenWidth > 992) {
+            this.widthPx = '450px';
+            this.heightPx = '450px';
+        }
     }
 
     public get imageToDisplay() {
@@ -203,13 +208,17 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     }
     onResize(event) {
         this.screenWidth = event.target.innerWidth;
+        if (this.screenWidth > 992) {
+            this.widthPx = '720px';
+            this.heightPx = '720px';
+        }
     }
     onFocus(target) {
         target.scrollIntoView({behavior: 'smooth'});
     }
     rotateImage() {
         this.currentImage = '';
-        const orientationArray = [0, 3, 8, 3, 6, 8, 3, 6 , 8 , 3]; // This is array
+        const orientationArray = [2,3,4,5,6,7,8]; // This is array
         console.log(this.currentOrientation);
         if (this.currentOrientation === 10) {
             this.currentOrientation = 1;

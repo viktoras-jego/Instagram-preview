@@ -5,16 +5,19 @@
         <!-- FOR DESKTOPS more than 992 pixels -->
         <div *ngIf="screenWidth > 992" style="padding: 0" class="login-screen col-md-4 col-md-offset-4 col-sm-offset-3 col-sm-6 col-xs-12">
 
+            <!-- Photo Upload Modal -->
+
+
             <!-- PRELOADER -->
             <preloader *ngIf="loading"></preloader>
 
             <!-- FRONT PAGE UI -->
-            <div *ngIf="status === 'f'" #loginScreen>
+            <div *ngIf="status === ''" #loginScreen>
                 <div class="logo-row">
                     <img class="logo" src="../../assets/Photos/logo.png">
                 </div>
                 <div class="title-row">
-                    <span class="title">Profile Preview</span>
+                    <span class="title">Instagram Profile Preview</span>
                 </div>
                 <div class="note-row">
                     <span class="note">Enter Username you wish to preview</span>
@@ -23,14 +26,14 @@
                     <div style="padding-right: 15px; padding-left: 15px" class="search-row">
                         <div class="form-group">
                             <div class="icon-addon addon-md">
-                                <input #user type="text" placeholder="Username" class="form-control search-text" id="user" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                                <input #usernameInput (focus)="onFocus(usernameInput)" #user type="text" placeholder="Username" class="form-control search-text" id="user" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                                 <label for="user" class="glyphicon glyphicon-search" rel="tooltip" title="user"></label>
                             </div>
                         </div>
                     </div>
                     <div class="checkbox checkbox-row">
-                        <input #checkbox type="checkbox" id="checkbox1">
-                        <label for="checkbox1">
+                        <input #checkbox type="checkbox" id="checkbox">
+                        <label for="checkbox">
                             Remember Username
                         </label>
                     </div>
@@ -41,18 +44,47 @@
             </div>
 
             <!-- PROFILE PREVIEW UI  status = 'Public'-->
-            <div [hidden]="status !== 'g'" #profileUI style="opacity: 1; height: 100%">
-                <div class="user-info">
-                    <div class="profile-picture-row">
-                        <img class="profile-picture" [src]="userInfo.profilePicture">
+            <div [hidden]="status !== 'Public'">
+                <div #profileUI class="profileUI">
+                    <div class="user-info">
+                        <div class="profile-picture-row">
+                            <img class="profile-picture" [src]="userInfo.profilePicture">
+                        </div>
+                        <div class="username">
+                            <div class="font1">{{userInfo.username}}</div>
+                            <div style="margin-top: 5px" class="font2">{{userInfo.fullName}}</div>
+                            <button (click)="photoModal.open()" class="add-button">
+                                Add Photo
+                            </button>
+                            <modal (onClose)="clearImage()" #photoModal>
+                                <modal-header #modalHeader1>
+                                </modal-header>
+                                <modal-content>
+                                    <div>
+                                        <ng-croppie *ngIf="croppieImage" #ngxCroppie [orientation]="orientation" [croppieOptions]="croppieOptions" [imageUrl]="croppieImage" (result)="newImageResultFromCroppie($event)"></ng-croppie>
+                                    </div>
+                                    <div>
+                                        <div class="image-upload">
+                                            <label *ngIf="croppieImage === ''" for="fileupload2">
+                                                <img class="add-image" src="../../assets/Photos/Plus.png">
+                                                <span style="display: block" class="upload-text">Upload a Photo</span>
+                                            </label>
+                                            <input #inputFile style="display: none" type="file" id="fileupload2"  #imageUpload (change)="imageUploadEvent($event)" accept="image/*">
+                                        </div>
+                                    </div>
+                                </modal-content>
+                                <modal-footer style="text-align: center; width: inherit">
+                                    <button type="button" class="btn action-btn btn-default cancel-btn" (click)="photoModal.close()">Cancel</button>
+                                    <button type="button" class="btn action-btn btn-default clear-btn" data-dismiss="modal" (click)="clearImage()">Clear</button>
+                                    <button type="button" class="btn action-btn btn-default rotate-btn" data-dismiss="modal" (click)="rotateImage()">Rotate</button>
+                                    <button type="button" class="btn action-btn btn-default save-btn" (click)="saveImageFromCroppie(); photoModal.close()">Save</button>
+                                </modal-footer>
+                            </modal>
+                        </div>
                     </div>
-                    <div class="username">
-                        <div class="font1">{{userInfo.username}}</div>
-                        <div style="margin-top: 5px" class="font2">{{userInfo.fullName}}</div>
+                    <div class="photo-box2">
+                        <img *ngFor="let image of images" class="single-photo2" [src]="image">
                     </div>
-                </div>
-                <div class="">
-
                 </div>
             </div>
         </div>

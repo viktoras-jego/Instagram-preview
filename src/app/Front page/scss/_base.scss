@@ -2,7 +2,8 @@
               LOGIN SCREEN
 ******************************************/
 .login-screen{
-  height: 555px;
+  height: 667px;
+  width: 375px;
 }
 .login-screen2{
   height: 100vh;
@@ -128,6 +129,11 @@
   vertical-align: bottom;
   border-left: .5vw solid transparent;
 }
+.photo-box2 {
+  width: 100%;
+  vertical-align: bottom;
+  border-left: .5vw solid transparent;
+}
 
 .profileUI {
   opacity: 1;
@@ -141,6 +147,13 @@
   border-top: .4vw solid transparent;
   width: 33.1666666vw;
   height: 33.1666666vw;
+  display: inline;
+}
+
+.single-photo2 {
+  border-right: 1px solid transparent;
+  border-top: .8px solid transparent;
+  width: 33.1666666%;
   display: inline;
 }
 
