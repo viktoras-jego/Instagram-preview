@@ -35,6 +35,7 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     @ViewChild('checkbox')checkbox: ElementRef;
     @ViewChild('profileUI')profileUI: ElementRef;
     @ViewChild('loginScreen')loginScreen: ElementRef;
+    @ViewChild('errorScreen')errorScreen: ElementRef;
     @ViewChild('list')list: ElementRef;
     @ViewChild('inputFile')inputFile: ElementRef;
     @ViewChild('usernameInput')usernameInput: ElementRef;
@@ -54,13 +55,6 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
         }
     }
 
-    public get imageToDisplay() {
-        console.log('test1');
-        if (this.currentImage) { return this.currentImage; }
-        if (this.imageUrl) { return this.imageUrl; }
-        return `http://placehold.it/${this.widthPx}x${this.heightPx}`;
-    }
-
     public get croppieOptions(): CroppieOptions {
         console.log('test');
         const opts: CroppieOptions = {};
@@ -73,6 +67,7 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
             height: this.heightPx
         };
         opts.enforceBoundary = true;
+        opts.enableExif = true;
         opts.enableOrientation = true;
         return opts;
     }
@@ -145,9 +140,8 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
             success: (data) => {
                 this.getData(data);
             },
-            error: function(error){
-                console.log(error);
-                console.log('User does not exist'); // send the error notifications to console
+            error: () => {
+                this.showError();
             }
         });
     }
@@ -184,6 +178,44 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
             this.loading = false;
         }, time * 1400);
     }
+
+    showError(): void {
+        const time = 1.3;
+        const tl = new TimelineMax({});
+        const errorScreen = this.errorScreen.nativeElement;
+        const loginScreen = this.loginScreen.nativeElement;
+        tl.to(loginScreen, time, {
+            opacity: 0
+        });
+        setTimeout(() => {
+            this.status = 'Error';
+        }, time * 1000);
+        tl.to(errorScreen, time, {
+            opacity: 1
+        });
+        setTimeout(() => {
+            this.loading = false;
+        }, time * 1000);
+    }
+
+    showLogin(): void {
+        this.loading = true;
+        const tl = new TimelineMax({});
+        setTimeout(() => {
+            this.status = '';
+            const loginScreen = this.loginScreen.nativeElement;
+            tl.to(loginScreen, 1.3, {
+                opacity: 1
+            });
+        },  1000);
+        setTimeout(() => {
+            this.loading = false;
+            const errorScreen = this.errorScreen.nativeElement;
+            tl.to(errorScreen, 0, {
+                opacity: 1
+            });
+        }, 1500);
+    }
     checkRemember(): void {
         if (localStorage.getItem('Profile_Preview_Username')) {
             this.checkbox.nativeElement.checked = true;
@@ -209,24 +241,12 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     onResize(event) {
         this.screenWidth = event.target.innerWidth;
         if (this.screenWidth > 992) {
-            this.widthPx = '720px';
-            this.heightPx = '720px';
+            this.widthPx = '450px';
+            this.heightPx = '450px';
         }
     }
     onFocus(target) {
         target.scrollIntoView({behavior: 'smooth'});
-    }
-    rotateImage() {
-        this.currentImage = '';
-        const orientationArray = [2,3,4,5,6,7,8]; // This is array
-        console.log(this.currentOrientation);
-        if (this.currentOrientation === 10) {
-            this.currentOrientation = 1;
-            this.orientation = orientationArray[this.currentOrientation];
-        } else {
-            this.currentOrientation++;
-        }
-        this.orientation = orientationArray[this.currentOrientation];
     }
 
 }

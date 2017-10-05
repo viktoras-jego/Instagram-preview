@@ -43,6 +43,17 @@
                 </form>
             </div>
 
+            <div [hidden]="status !== 'Error'">
+                <div #errorScreen>
+                    <div class="error-row">
+                        <span class="error-message">Profile is in Private mode or does not exist</span>
+                    </div>
+                    <div class="button-row">
+                        <button (click)="showLogin()" type="submit" class="fill">Try Again</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- PROFILE PREVIEW UI  status = 'Public'-->
             <div [hidden]="status !== 'Public'">
                 <div #profileUI class="profileUI">
@@ -76,7 +87,6 @@
                                 <modal-footer style="text-align: center; width: inherit">
                                     <button type="button" class="btn action-btn btn-default cancel-btn" (click)="photoModal.close()">Cancel</button>
                                     <button type="button" class="btn action-btn btn-default clear-btn" data-dismiss="modal" (click)="clearImage()">Clear</button>
-                                    <button type="button" class="btn action-btn btn-default rotate-btn" data-dismiss="modal" (click)="rotateImage()">Rotate</button>
                                     <button type="button" class="btn action-btn btn-default save-btn" (click)="saveImageFromCroppie(); photoModal.close()">Save</button>
                                 </modal-footer>
                             </modal>
@@ -131,6 +141,17 @@
                 </form>
             </div>
 
+            <div [hidden]="status !== 'Error'">
+                <div #errorScreen>
+                    <div class="error-row">
+                        <span class="error-message">Profile is in Private mode or does not exist</span>
+                    </div>
+                    <div class="button-row">
+                        <button (click)="showLogin()" type="submit" class="fill">Try Again</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- PROFILE PREVIEW UI  status = 'Public'-->
             <div [hidden]="status !== 'Public'">
                 <div #profileUI class="profileUI">
@@ -164,7 +185,6 @@
                                 <modal-footer style="text-align: center; width: inherit">
                                     <button type="button" class="btn action-btn btn-default cancel-btn" (click)="photoModal.close()">Cancel</button>
                                     <button type="button" class="btn action-btn btn-default clear-btn" data-dismiss="modal" (click)="clearImage()">Clear</button>
-                                    <button type="button" class="btn action-btn btn-default rotate-btn" data-dismiss="modal" (click)="rotateImage()">Rotate</button>
                                     <button type="button" class="btn action-btn btn-default save-btn" (click)="saveImageFromCroppie(); photoModal.close()">Save</button>
                                 </modal-footer>
                             </modal>

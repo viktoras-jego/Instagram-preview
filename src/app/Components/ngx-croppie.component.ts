@@ -14,7 +14,6 @@ export class NgxCroppieComponent implements OnInit, OnChanges {
     @ViewChild('imageEdit') imageEdit: ElementRef;
     @Input() croppieOptions: CroppieOptions;
     @Input() orientation: any;
-    @Input() rotate: any;
     @Input() imageUrl: string;
     @Input() bind: (img: string) => void;
     @Output() result: EventEmitter<string> = new EventEmitter<string>();
