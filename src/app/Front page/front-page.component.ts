@@ -49,6 +49,7 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
         this.screenWidth = window.innerWidth;
         this.currentImage = this.imageUrl;
         this.croppieImage = this.imageUrl;
+        console.log(this.screenWidth);
         if (this.screenWidth > 992) {
             this.widthPx = '450px';
             this.heightPx = '450px';
@@ -56,7 +57,6 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     public get croppieOptions(): CroppieOptions {
-        console.log('test');
         const opts: CroppieOptions = {};
         opts.viewport = {
             width: this.widthPx,
@@ -73,12 +73,10 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     newImageResultFromCroppie(img: string) {
-        console.log('test2');
         this.croppieImage = img;
     }
 
     saveImageFromCroppie() {
-        console.log('test3');
         this.currentImage = this.croppieImage;
         if (this.inputFile.nativeElement.value !== '') {
             this.imageDisplay();
