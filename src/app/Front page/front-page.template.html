@@ -59,11 +59,11 @@
                 <div #profileUI class="profileUI">
                     <div class="user-info">
                         <div class="profile-picture-row">
-                            <img class="profile-picture" [src]="userInfo.profilePicture">
+                            <img class="profile-picture" [src]="dummyUser.profilePicture">
                         </div>
                         <div class="username">
-                            <div class="font1">{{userInfo.username}}</div>
-                            <div style="margin-top: 5px" class="font2">{{userInfo.fullName}}</div>
+                            <div class="font1">aweae</div>
+                            <div style="margin-top: 5px" class="font2">{{dummyUser.fullName}}</div>
                             <button (click)="photoModal.open()" class="add-button">
                                 Add Photo
                             </button>
@@ -93,7 +93,7 @@
                         </div>
                     </div>
                     <div class="photo-box2">
-                        <img *ngFor="let image of images" class="single-photo2" [src]="image">
+                        <img *ngFor="let image of dummyPhotos" class="single-photo2" [src]="image">
                     </div>
                 </div>
             </div>

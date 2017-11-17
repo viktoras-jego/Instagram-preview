@@ -19,11 +19,38 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     public userInfo = {
         fullName: '',
         profilePicture: '',
-        username: ''
+        username: '',
+        posts: '',
+        followed: '',
+        follows: ''
     };
     public status: string = '';
 
-    widthPx = '80vw';
+    public dummyPhotos = [
+                'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.108.873.873/20066799_706414102898617_3184857248010600448_n.jpg',
+                'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.107.861.861/20184919_116943978935194_8567338812005416960_n.jpg',
+                'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.99.797.797/20185014_286653648475373_1163594412438061056_n.jpg',
+                'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.134.1080.1080/20214307_329021344190130_4159934563595845632_n.jpg',
+                'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.100.799.799/20398961_122189688403027_2017131716983914496_n.jpg',
+                'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.103.827.827/20394388_1434919299926135_5052655095301275648_n.jpg',
+                'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.135.1080.1080/20481786_1422217437861803_1942832815737405440_n.jpg',
+                'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.62.595.595/20590310_471501456556266_1623176528953081856_n.jpg',
+                'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.99.797.797/20688322_292010481266899_7157904075021877248_n.jpg',
+                'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.100.799.799/20398961_122189688403027_2017131716983914496_n.jpg',
+                'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.134.1080.1080/20214307_329021344190130_4159934563595845632_n.jpg',
+                'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.107.861.861/20184919_116943978935194_8567338812005416960_n.jpg',
+            ];
+    public dummyUser = {
+        fullName: 'Marius Pilipas',
+        profilePicture: 'https://scontent-iad3-1.cdninstagram.com/t51.2885-19/s150x150/14591986_1052414564904497_290196869877858304_n.jpg',
+        username: 'granmarino',
+        posts: '197',
+        followed: '1610',
+        follows: '608'
+    };
+
+
+        widthPx = '80vw';
     heightPx = '80vw';
     imageUrl = '';
     currentImage: string;
@@ -49,7 +76,6 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
         this.screenWidth = window.innerWidth;
         this.currentImage = this.imageUrl;
         this.croppieImage = this.imageUrl;
-        console.log(this.screenWidth);
         if (this.screenWidth > 992) {
             this.widthPx = '450px';
             this.heightPx = '450px';
@@ -118,6 +144,7 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     ngAfterViewInit (): void {
+        this.openProfile();
         this.checkRemember();
     }
 
@@ -130,13 +157,13 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     sendRequest(): any {
-        const username = this.user.nativeElement.value;
+       // const username = this.user.nativeElement.value;
         $.ajax({
-            url: 'https://igpi.ga/' + username + '/media/?count=12',
+            url: 'https://igpi.ga/' + 'granmarino' + '/?__a=1',
             dataType: 'jsonp',
             type: 'GET',
             success: (data) => {
-                this.getData(data);
+                // this.getData(data);
             },
             error: () => {
                 this.showError();
@@ -144,19 +171,24 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
         });
     }
 
-    getData(data: any): void {
+    /*getData(data: any): void {
         // checks if user is not Private
-        if (0 < data.items.length) {
+        if (0 < data.user.media.nodes.length) {
             // Gets Images
-            data.items.forEach((item) => {
-                this.images.push(item.images.thumbnail.url);
+            data.user.media.nodes.forEach((item) => {
+                this.images.push(item.thumbnail_src);
             });
-            this.userInfo.fullName = data.items[0].user.full_name;
-            this.userInfo.profilePicture = data.items[0].user.profile_picture;
-            this.userInfo.username = data.items[0].user.username;
+
+            this.userInfo.fullName = data.user.full_name;
+            this.userInfo.profilePicture = data.user.profile_pic_url_hd;
+            this.userInfo.username = data.user.username;
+            this.userInfo.posts = data.user.media.count;
+            this.userInfo.followed = data.user.followed_by.count;
+            this.userInfo.follows = data.user.follows.count;
+            console.log(this.userInfo);
             this.openProfile();
         }
-    }
+    }*/
 
     openProfile(): any {
         const time = 1.3;
