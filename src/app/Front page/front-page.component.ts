@@ -20,13 +20,13 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
         fullName: '',
         profilePicture: '',
         username: '',
-        posts: '',
+        posts: 0,
         followed: '',
-        follows: ''
+        follows: 0
     };
     public status: string = '';
 
-    public dummyPhotos = [
+    /* public dummyPhotos = [
                 'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.108.873.873/20066799_706414102898617_3184857248010600448_n.jpg',
                 'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.107.861.861/20184919_116943978935194_8567338812005416960_n.jpg',
                 'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.99.797.797/20185014_286653648475373_1163594412438061056_n.jpg',
@@ -39,15 +39,15 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
                 'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.100.799.799/20398961_122189688403027_2017131716983914496_n.jpg',
                 'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.134.1080.1080/20214307_329021344190130_4159934563595845632_n.jpg',
                 'https://scontent-iad3-1.cdninstagram.com/t51.2885-15/s150x150/e35/c0.107.861.861/20184919_116943978935194_8567338812005416960_n.jpg',
-            ];
-    public dummyUser = {
+            ];*/
+    /* public dummyUser = {
         fullName: 'Marius Pilipas',
         profilePicture: 'https://scontent-iad3-1.cdninstagram.com/t51.2885-19/s150x150/14591986_1052414564904497_290196869877858304_n.jpg',
         username: 'granmarino',
         posts: '197',
         followed: '1610',
         follows: '608'
-    };
+    }; */
 
 
         widthPx = '80vw';
@@ -92,7 +92,7 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
             width: this.widthPx,
             height: this.heightPx
         };
-        opts.enforceBoundary = true;
+        opts.enforceBoundary = false;
         opts.enableExif = true;
         opts.enableOrientation = true;
         return opts;
@@ -144,7 +144,6 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     ngAfterViewInit (): void {
-        this.openProfile();
         this.checkRemember();
     }
 
@@ -157,13 +156,13 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     sendRequest(): any {
-       // const username = this.user.nativeElement.value;
+        const username = this.user.nativeElement.value;
         $.ajax({
-            url: 'https://igpi.ga/' + 'granmarino' + '/?__a=1',
+            url: 'https://igpi.ga/' + username + '/?__a=1',
             dataType: 'jsonp',
             type: 'GET',
             success: (data) => {
-                // this.getData(data);
+                this.getData(data);
             },
             error: () => {
                 this.showError();
@@ -171,7 +170,7 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
         });
     }
 
-    /*getData(data: any): void {
+    getData(data: any): void {
         // checks if user is not Private
         if (0 < data.user.media.nodes.length) {
             // Gets Images
@@ -183,12 +182,28 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
             this.userInfo.profilePicture = data.user.profile_pic_url_hd;
             this.userInfo.username = data.user.username;
             this.userInfo.posts = data.user.media.count;
-            this.userInfo.followed = data.user.followed_by.count;
             this.userInfo.follows = data.user.follows.count;
-            console.log(this.userInfo);
+            this.checkFollowed(data.user.followed_by.count);
+
             this.openProfile();
         }
-    }*/
+    }
+
+     checkFollowed(currentFollowed: any): any {
+        if ((currentFollowed > 10000) && (currentFollowed < 1000000)) {
+            const follow = currentFollowed / 1000;
+            const with2Decimals = follow.toString().match(/^-?\d+(?:\.\d{0,1})?/)[0];
+            this.userInfo.followed = with2Decimals + 'k';
+        }
+
+        if (currentFollowed > 1000000) {
+            const follow = currentFollowed / 1000000;
+            const with2Decimals = follow.toString().match(/^-?\d+(?:\.\d{0,1})?/)[0];
+            this.userInfo.followed = with2Decimals + 'm';
+        } else if (currentFollowed < 10000) {
+            this.userInfo.followed = currentFollowed;
+        }
+    }
 
     openProfile(): any {
         const time = 1.3;
@@ -264,6 +279,7 @@ export class FrontPageComponent implements OnInit, AfterViewInit, OnChanges {
     saveUsername(): void {
         localStorage.setItem('Profile_Preview_Username', this.user.nativeElement.value);
     }
+
 
     unsaveUsername (): void {
         localStorage.removeItem('Profile_Preview_Username');

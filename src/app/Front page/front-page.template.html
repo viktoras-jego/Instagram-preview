@@ -58,19 +58,53 @@
             <div [hidden]="status !== 'Public'">
                 <div #profileUI class="profileUI">
                     <div class="user-info">
+                        <div  class="font1 username-top">{{userInfo.username}}</div>
+                        <div class="first-row">
+                            <img class="profile-picture" [src]="userInfo.profilePicture">
+                            <div class="stats-box">
+                                <div class="stats-container">
+                                    <div class="stats">
+                                        <div class="stat">
+                                            <div class="stat-number">
+                                                <span class="number-font">{{userInfo.posts}}</span>
+                                            </div>
+                                            <div class="label-title">
+                                                <span class="label-font">posts</span>
+                                            </div>
+                                        </div>
+                                        <div class="stat">
+                                            <div class="stat-number">
+                                                <span class="number-font">{{userInfo.followed}}</span>
+                                            </div>
+                                            <div class="label-title">
+                                                <span class="label-font">followers</span>
+                                            </div>
+                                        </div>
+                                        <div class="stat">
+                                            <div class="stat-number">
+                                                <span class="number-font">{{userInfo.follows}}</span>
+                                            </div>
+                                            <div class="label-title">
+                                                <span class="label-font">following</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="add-photo-box">
+                                    <button (click)="photoModal.open()" class="add-button">
+                                        Add Photo
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <div class="profile-picture-row">
-                            <img class="profile-picture" [src]="dummyUser.profilePicture">
+                            <div style="margin-top: 5px" class="font2">{{userInfo.fullName}}</div>
                         </div>
                         <div class="username">
-                            <div class="font1">aweae</div>
-                            <div style="margin-top: 5px" class="font2">{{dummyUser.fullName}}</div>
-                            <button (click)="photoModal.open()" class="add-button">
-                                Add Photo
-                            </button>
                             <modal (onClose)="clearImage()" #photoModal>
                                 <modal-header #modalHeader1>
                                 </modal-header>
-                                <modal-content>
+                                <modal-content style="text-align: center">
                                     <div>
                                         <ng-croppie *ngIf="croppieImage" #ngxCroppie [orientation]="orientation" [croppieOptions]="croppieOptions" [imageUrl]="croppieImage" (result)="newImageResultFromCroppie($event)"></ng-croppie>
                                     </div>
@@ -93,7 +127,7 @@
                         </div>
                     </div>
                     <div class="photo-box2">
-                        <img *ngFor="let image of dummyPhotos" class="single-photo2" [src]="image">
+                        <img *ngFor="let image of images" class="single-photo2" [src]="image">
                     </div>
                 </div>
             </div>
@@ -156,19 +190,53 @@
             <div [hidden]="status !== 'Public'">
                 <div #profileUI class="profileUI">
                     <div class="user-info">
-                        <div class="profile-picture-row">
+                        <div  class="font1 username-top">{{userInfo.username}}</div>
+                        <div class="first-row">
                             <img class="profile-picture" [src]="userInfo.profilePicture">
+                            <div class="stats-box">
+                                <div class="stats-container">
+                                    <div class="stats">
+                                        <div class="stat">
+                                            <div class="stat-number">
+                                                <span class="number-font">{{userInfo.posts}}</span>
+                                            </div>
+                                            <div class="label-title">
+                                                <span class="label-font">posts</span>
+                                            </div>
+                                        </div>
+                                        <div class="stat">
+                                            <div class="stat-number">
+                                                <span class="number-font">{{userInfo.followed}}</span>
+                                            </div>
+                                            <div class="label-title">
+                                                <span class="label-font">followers</span>
+                                            </div>
+                                        </div>
+                                        <div class="stat">
+                                            <div class="stat-number">
+                                                <span class="number-font">{{userInfo.follows}}</span>
+                                            </div>
+                                            <div class="label-title">
+                                                <span class="label-font">following</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="add-photo-box">
+                                    <button (click)="photoModal.open()" class="add-button">
+                                        Add Photo
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-picture-row">
+                            <div style="margin-top: 5px" class="font2">{{userInfo.fullName}}</div>
                         </div>
                         <div class="username">
-                            <div class="font1">{{userInfo.username}}</div>
-                            <div style="margin-top: 5px" class="font2">{{userInfo.fullName}}</div>
-                            <button (click)="photoModal.open()" class="add-button">
-                                Add Photo
-                            </button>
                             <modal (onClose)="clearImage()" #photoModal>
                                 <modal-header #modalHeader1>
                                 </modal-header>
-                                <modal-content>
+                                <modal-content style="text-align: center">
                                     <div>
                                         <ng-croppie *ngIf="croppieImage" #ngxCroppie [orientation]="orientation" [croppieOptions]="croppieOptions" [imageUrl]="croppieImage" (result)="newImageResultFromCroppie($event)"></ng-croppie>
                                     </div>
@@ -190,8 +258,8 @@
                             </modal>
                         </div>
                     </div>
-                    <div class="photo-box">
-                        <img *ngFor="let image of images" class="single-photo" [src]="image">
+                    <div class="photo-box2">
+                        <img *ngFor="let image of images" class="single-photo2" [src]="image">
                     </div>
                 </div>
             </div>

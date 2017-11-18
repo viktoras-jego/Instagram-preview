@@ -87,19 +87,20 @@
 *******************************/
 
 .user-info {
-  margin-top: 5%;
-  height: calc(100vh - 138vw);
+  margin-top: 1%;
   min-height: 138px;
-  max-height: 170px;
+  max-height: 300px;
   border-bottom: solid 1px rgba(0, 0, 0, 0.25);
 }
 
 .profile-picture-row {
   height: 100%;
-  width: 30%;
-  padding: 2%;
+  width: 100%;
+  padding-left: 15px;
   display: inline-block;
-  text-align: center;
+  text-align: left;
+  margin-bottom: 20px;
+  margin-top: 10px;
 }
 
 .profile-picture {
@@ -110,17 +111,10 @@
   margin-top: 10px;
 }
 
-.username {
-  width: 50%;
-  display: inline-block;
-  vertical-align: middle;
-  text-align: center;
-  padding-top: 15px;
-}
-
 .font1 {
   font-family: 'Roboto', sans-serif;
   font-size: 22px;
+  font-weight: 400;
 }
 
 .font2 {
@@ -173,8 +167,7 @@
   border-radius: 5px;
   border: 1px solid rgba(128, 128, 128, 0.7);
   display: inline-block;
-  margin-top: 10px;
-  width: 90%;
+  width: 65%;
   font-weight: 700;
   height: 30px;
 }
@@ -228,9 +221,80 @@
   color: rgba(0, 128, 0, 0.85);
 }
 
+.username-top {
+  border-bottom: solid 1px rgba(0, 0, 0, 0.25);
+  padding-bottom: 4px;
+  width: 100%;
+  padding-left: 5%;
+}
 
+.first-row {
+  width: 100%;
+  height: 90px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: row;
+}
 
+.stats-box {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
+.stats-container {
+  flex: 2;
+  display: flex;
+  justify-content: center
+}
+
+.stats {
+  display: flex;
+  width: 240px;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.stat {
+  width: 80px;
+  padding-right: 6%;
+  padding-left: 6%;
+  display: flex;
+  flex-direction: column;
+}
+
+.add-photo-box {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.stat-number {
+  flex: 1;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.label-title {
+  flex: 1;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.number-font {
+  font-size: 17px;
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+}
+
+.label-font {
+  color: rgba(0, 0, 0, 0.35);
+}
 
 
 
